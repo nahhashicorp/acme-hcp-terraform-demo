@@ -39,7 +39,7 @@ variable "allowed_ssh_cidr" {
 variable "instance_type" {
   type        = string
   description = "EC2 instance type (best demo knob)"
-  default     = "t3.large"
+  default     = "t3.micro"
 }
 
 variable "ami_id" {
