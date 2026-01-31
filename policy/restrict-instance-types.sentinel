@@ -1,0 +1,21 @@
+import "tfplan/v2" as tfplan
+
+# Approved instance types for demo (cost control guardrail)
+allowed = [
+  "t3.micro",
+  "t3.small",
+  "t3.medium"
+]
+
+ec2_instances = filter tfplan.resource_changes as _, rc {
+  rc.type is "aws_instance" and (
+    rc.change.actions contains "create" or
+    rc.change.actions contains "update"
+  )
+}
+
+main = rule {
+  all ec2_instances as _, inst {
+    inst.change.after.instance_type in allowed
+  }
+}
