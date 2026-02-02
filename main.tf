@@ -12,7 +12,7 @@ module "app_server" {
   allowed_ssh_cidr = var.allowed_ssh_cidr
 
   # Demo knobs (change these in PR)
-  instance_type    = "t2.micro"
+  instance_type    = var.instance_type
   ami_id           = var.ami_id
 
   tags             = var.tags
