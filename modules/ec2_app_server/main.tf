@@ -7,7 +7,6 @@ locals {
   })
 }
 
-# If you're allowed to create a security group, keep this available.
 resource "aws_security_group" "app_sg" {
   count       = var.create_security_group ? 1 : 0
   name        = "${local.name}-sg"
@@ -33,16 +32,13 @@ resource "aws_security_group" "app_sg" {
   tags = local.merged_tags
 }
 
-# If you are NOT allowed to create a security group, look up an existing one.
 data "aws_security_group" "existing" {
-  count  = var.create_security_group ? 0 : 1
-  id     = var.existing_security_group_id
+  count = var.create_security_group ? 0 : 1
+  id    = var.existing_security_group_id
 }
 
 locals {
-  security_group_id = var.create_security_group
-    ? aws_security_group.app_sg[0].id
-    : data.aws_security_group.existing[0].id
+  security_group_id = try(aws_security_group.app_sg[0].id, data.aws_security_group.existing[0].id)
 }
 
 resource "aws_instance" "app" {
@@ -54,7 +50,7 @@ resource "aws_instance" "app" {
 
   metadata_options {
     http_endpoint = "enabled"
-    http_tokens   = "required" # IMDSv2
+    http_tokens   = "required"
   }
 
   tags = local.merged_tags
