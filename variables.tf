@@ -23,11 +23,13 @@ variable "name_prefix" {
 variable "vpc_id" {
   type        = string
   description = "VPC ID"
+  default = null
 }
 
 variable "subnet_id" {
   type        = string
   description = "Subnet ID"
+  default = null
 }
 
 variable "allowed_ssh_cidr" {
@@ -45,6 +47,7 @@ variable "instance_type" {
 variable "ami_id" {
   type        = string
   description = "AMI ID for the app server image"
+  default = null
 }
 
 variable "tags" {
